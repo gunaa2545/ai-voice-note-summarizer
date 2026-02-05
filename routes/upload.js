@@ -1,6 +1,9 @@
 const express = require("express");
 const multer = require("multer");
-const { uploadAudioToAssemblyAI } = require("../services/assemblyAI");
+const {
+  uploadAudioToAssemblyAI,
+  createTranscriptionJob,
+} = require("../services/assemblyAI");
 
 const router = express.Router();
 
@@ -8,7 +11,7 @@ const upload = multer({
   storage: multer.memoryStorage(),
 });
 
-router.post("/upload", async (req, res) => {
+router.post("/upload", (req, res) => {
   upload.single("audio")(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ error: "File upload failed" });
@@ -20,14 +23,15 @@ router.post("/upload", async (req, res) => {
 
     try {
       const uploadUrl = await uploadAudioToAssemblyAI(req.file.buffer);
+      const transcriptId = await createTranscriptionJob(uploadUrl);
 
       res.json({
-        message: "Audio uploaded to AssemblyAI",
-        uploadUrl: uploadUrl,
+        message: "Transcription job created",
+        transcriptId: transcriptId,
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Failed to upload audio" });
+      res.status(500).json({ error: "Failed to create transcription job" });
     }
   });
 });

@@ -16,6 +16,5 @@ app.get("/", (req, res) => {
 app.use("/api", uploadRoute);
 
 app.listen(5000, () => {
-  console.log("AssemblyAI key loaded:", !!process.env.ASSEMBLYAI_API_KEY);
   console.log("Server started on port 5000");
 });

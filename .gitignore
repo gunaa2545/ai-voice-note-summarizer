@@ -1,2 +1,20 @@
-node_modules
+# Node
+node_modules/
+
+# Environment variables
 .env
+
+# Uploads (temporary audio files)
+uploads/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / editor noise
+.DS_Store
+.vscode/
+
+file_example_MP3_700KB.mp3
+test_whisper.py
+
